@@ -14,9 +14,6 @@ FROM "Actuator" JOIN "Room" USING(room_id)
 ORDER BY room
 
 
-FROM "Actuator","Room" 
-WHERE "Actuator".room_id="Room".room_id AND 
-
 
 UPDATE "Actuator" SET state='ON' WHERE type_id=1;
 
@@ -72,7 +69,7 @@ FROM "Rules" JOIN "Sensor" USING(sensor_id) JOIN "Room" USING(room_id)
 GROUP BY room;
 
 
-HARD
+(opcional) HARD
 
 *AVERAGE*
 
