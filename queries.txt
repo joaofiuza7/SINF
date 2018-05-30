@@ -1,0 +1,89 @@
+EASY
+
+*SENSOR*
+
+SELECT value as measurement, timestamp 
+FROM "RegistSensor" 
+WHERE sensor_id=1
+ORDER BY timestamp
+
+*ACTUATOR*
+
+SELECT "Actuator".nome AS atuador, "Room".name AS room, state 
+FROM "Actuator" JOIN "Room" USING(room_id)
+ORDER BY room
+
+
+FROM "Actuator","Room" 
+WHERE "Actuator".room_id="Room".room_id AND 
+
+
+UPDATE "Actuator" SET state='ON' WHERE type_id=1;
+
+
+*CONFIGURATION DATA*
+
+UPDATE "Sensor" SET room_id=1 WHERE sensor_id=4;
+UPDATE "Sensor" SET room_id=2 WHERE sensor_id=2;
+
+SELECT "SensorType".names AS Sensor, "Room".name AS room
+FROM "Sensor" JOIN "Room" USING(room_id)
+JOIN "SensorType" USING(type_id)
+ORDER BY sensor_id LIMIT 4
+
+
+*CONTROL RULES DATA*
+
+UPDATE "Rules" SET value_max=23 WHERE rules_id=5;
+
+SELECT  rules_id AS rule, "Room".name AS room, value_max AS reference,  "SensorType".names AS sensor
+FROM "Rules" JOIN "Sensor" USING(sensor_id) 
+JOIN "Room" USING (room_id)
+JOIN "SensorType" USING (type_id)
+WHERE rules_id=5;
+
+
+MEDIUM
+
+*AVERAGE*
+
+SELECT AVG(value) as Average, "Room".name as Room 
+FROM "RegistSensor" JOIN "Sensor" USING(sensor_id) JOIN "Room" USING(room_id)
+GROUP BY Room;
+
+*Number of state changes per room*
+
+SELECT "Room".name AS room , COUNT(registactuator_id) AS change 
+FROM "RegistActuator" JOIN "Actuator" USING(actuator_id) JOIN "Room" USING(room_id) 
+WHERE timestamp between 1525908315 AND 1525908317
+GROUP BY room;
+
+*Number of sensors per room*
+
+SELECT "Room".name AS Room , COUNT(DISTINCT "Sensor".type_id) AS Mote_Count, COUNT(sensor_id) AS Sensor_Count
+FROM "Sensor" JOIN "Room" USING(room_id) 
+GROUP BY Room;
+
+
+*Number of rules per room*
+
+SELECT "Room".name AS room , COUNT("Rules".rules_id) AS rules
+FROM "Rules" JOIN "Sensor" USING(sensor_id) JOIN "Room" USING(room_id) 
+GROUP BY room;
+
+
+HARD
+
+*AVERAGE*
+
+SELECT  "Room".name as Room,"SensorType".names as SensorType, AVG(value) as Average
+FROM "RegistSensor" JOIN "Sensor" USING(sensor_id) 
+JOIN "Room" USING(room_id) JOIN "SensorType" USING(type_id)
+GROUP BY SensorType,Room;
+
+
+
+
+
+
+
